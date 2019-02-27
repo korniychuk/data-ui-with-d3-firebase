@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="canvas"></div>
+
+<script src="https://d3js.org/d3.v5.js"></script>
+<script>
+const canvas = d3.select('.canvas');
+const svg = canvas.append('svg')
+    .attr('width', 600)
+    .attr('height', 600);
+
+svg.append('rect')
+    .attr('x', 10)
+    .attr('y', 10)
+    .attr('width', 100)
+    .attr('height', 100)
+    .attr('fill', 'lightblue')
+    .attr('stroke', 'darkorange')
+    .attr('stroke-width', 4)
+;
+
+svg.append('circle')
+    .attr('cx', 60)
+    .attr('cy', 60)
+    .attr('r', 50)
+    .attr('stroke', 'green')
+    .attr('stroke-width', 4)
+;
+
+svg.append('line')
+    .attr('x1', 10)
+    .attr('y1', 10)
+    .attr('x2', 110)
+    .attr('y2', 110)
+    .attr('stroke', 'darkgreen')
+    .attr('stroke-width', 4)
+;
+</script>
+</body>
+</html>
