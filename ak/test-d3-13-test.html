@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="canvas"></div>
+
+<script src="https://d3js.org/d3.v5.js"></script>
+<script>
+    const canvas = d3.select('.canvas');
+    const svg = canvas.append('svg')
+        .attr('width', 600)
+        .attr('height', 600);
+
+    function line(x1, y1, x2, y2) {
+        return svg.append('line')
+            .attr('x1', x1)
+            .attr('x2', x2)
+            .attr('y1', y1)
+            .attr('y2', y2)
+            .attr('stroke-width', 2)
+            .attr('stroke', 'green')
+        ;
+    }
+
+    line(50, 50, 200, 50);
+    line(50, 200, 200, 200);
+    line(200, 50, 200, 200);
+    line(50, 50, 50, 200);
+
+    const g = svg.append('g')
+        .attr('transform', 'translate(50, 50)')
+    ;
+    g.append('text')
+        .attr('x', 0)
+        .attr('y', -10)
+        .text('hello world')
+        .style('font-family', 'Sans-Serif')
+    ;
+
+    g.append('text')
+        .attr('x', 150)
+        .attr('y', -160)
+        .attr('text-anchor', 'end')
+        .attr('transform', 'rotate(90)')
+        .text('hello world')
+        .style('font-family', 'Sans-Serif')
+    ;
+
+    g.append('text')
+        .attr('x', -75)
+        .attr('y', -160)
+        .attr('transform', 'rotate(180)')
+        .attr('text-anchor', 'middle')
+        .text('Hello World')
+        .style('font-family', 'Sans-Serif')
+    ;
+
+    g.append('text')
+        .attr('x', -75)
+        .attr('y', -10)
+        .attr('text-anchor', 'middle')
+        .attr('transform', 'rotate(270)')
+        .text('Hello World')
+        .style('font-family', 'Sans-Serif')
+    ;
+
+
+</script>
+<b>Выводы: </b>
+<ol>
+    <li>transform: rotate(90) разворачивает не конкретный элемент а всю сетку координат. То
+        есть x и y будут направлены уже в другую сторону</li>
+</ol>
+</body>
+</html>
