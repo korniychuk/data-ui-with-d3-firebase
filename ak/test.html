@@ -9,7 +9,7 @@
     <title>Document</title>
 </head>
 <body>
-    <svg width="800" height="500">
+    <svg width="900" height="500">
         <g stroke-width="1" stroke="black">
             <rect x="10" y="10" width="100" height="100" fill="green"></rect>
             <rect x="10" y="120" width="100" height="100" fill="red"></rect>
@@ -30,15 +30,6 @@
             <path d="M 25 50 L 40 80 L 10 80 Z" fill="red" stroke-width="1" stroke="black"></path>
             <path d="M 150 50 L 70 200 L 225 200 C 225 200 150 150 150 50"></path>
         </g>
-        <g transform="translate(500, 10)">
-            <path d="
-            M 25 0
-            C 66 0, 66 50, 25 50
-            C 75 50, 75 125, 25 125
-            C -25 125, -25 50, 25 50
-            C -16 50, -16 0, 25 0
-            Z"></path>
-        </g>
         <g transform="translate(10, 300)">
             <path d="M10 10 C 20 20, 40 20, 50 10" stroke="black" fill="transparent"/>
             <path d="M70 10 C 70 20, 120 20, 120 10" stroke="black" fill="transparent"/>
@@ -49,6 +40,112 @@
             <path d="M10 110 C 20 140, 40 140, 50 110" stroke="black" fill="transparent"/>
             <path d="M70 110 C 70 140, 110 140, 110 110" stroke="black" fill="transparent"/>
             <path d="M130 110 C 120 140, 180 140, 170 110" stroke="black" fill="transparent"/>
+        </g>
+        <g transform="translate(450, 10)">
+            <path d="
+            M 25 0
+            C 58.33 0, 58.33 50, 25 50
+            C 75 50, 75 125, 25 125
+            C -25 125, -25 50, 25 50
+            C -8.33 50, -8.33 0, 25 0
+            Z"></path>
+        </g>
+        <g transform="translate(550, 10)">
+            <path
+                d="
+                    M 50 0
+                    L 100 100
+                    L 0 100
+                "
+                fill="lightgreen"
+                stroke="orange"
+                stroke-width="2px"
+            ></path>
+        </g>
+        <g transform="translate(450, 150)">
+            <path
+                d="
+                    M 50 0
+                    L 100 100
+                    L 0 100
+                    Z
+                "
+                fill="lightblue"
+                stroke="orange"
+                stroke-width="4"
+            ></path>
+            <path
+                d="
+                    M 50 0
+                    v 100
+                "
+                stroke="red"
+                stroke-width="4"
+            ></path>
+        </g>
+        <g transform="translate(700, 30)">
+            <path
+                d="
+                    M 50 0
+                    L 100 100
+                    L 0 100
+                    C -100 100, 0 -100, 50 0
+                "
+                fill="lightgreen"
+                stroke="orange"
+                stroke-width="2px"
+            ></path>
+        </g>
+        <g transform="translate(600, 130)">
+            <path
+                d="
+                    M 0 0
+                    h 25
+                    v 25
+                    h 25
+                    v 25
+                    h 25
+                    v 25
+                    h -25
+                    v 25
+                    h -25
+                    v 25
+                    h -25
+                    v -25
+                    h -25
+                    v -25
+                    h -25
+                    v -25
+                    h 25
+                    v -25
+                    h 25
+                    Z
+                "
+                fill="lightblue"
+                stroke="orange"
+                stroke-width="4"
+            ></path>
+        </g>
+        <g transform="translate(620, 140)">
+
+            <path d="
+                        M 70,70  A 75,55  0 1 1 160,140
+                        M 70,70  A 75,55 30 1 1 160,140
+                        M 70,70  A 75,55 60 1 1 160,140
+                        M 70,70  A 75,55 90 1 1 160,140
+                        Z
+                  "
+                  fill="transparent"
+                  stroke="lightblue"
+            />
+        </g>
+        <g transform="translate(620, 300)">
+            <path d="
+                        M 70,70  A 50,40  40 1 1 160,140
+                  "
+                  fill="transparent"
+                  stroke="lightblue"
+            />
         </g>
     </svg>
 </body>
