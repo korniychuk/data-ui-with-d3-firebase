@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="canvas">
+    <svg width="600" height="500">
+    </svg>
+</div>
+
+<script src="https://d3js.org/d3.v5.js"></script>
+<script>
+    const canvas = d3.select('.canvas svg');
+    const selectedRects = canvas.selectAll('rect');
+
+    d3.json('menu.json').then(data => {
+        const rects = selectedRects.data(data);
+
+        const y = d3.scaleLinear()
+            // .domain([ 0, 1000 ])
+            // .domain([ d3.min(data, v => v.orders), d3.max(data, v => v.orders) ])
+            // .domain(d3.extent(data.map(v => v.orders)))
+            .domain(d3.extent(data, v => v.orders))
+            .range([ 0, 500 ])
+        ;
+        const x = d3.scaleBand()
+            .domain(data.map(v => v.name))
+            .range([0, 600])
+            .paddingInner(0.2)
+            .paddingOuter(0.2)
+        ;
+
+        rects
+            .attr('x', (d, i) => x(d.name))
+            .attr('width', x.bandwidth)
+            .attr('height', d => y(d.orders))
+            .attr('fill', 'orange')
+        ;
+
+        rects.enter()
+            .append('rect')
+            .attr('x', (d, i) => x(d.name))
+            .attr('width', x.bandwidth)
+            .attr('height', d => y(d.orders))
+            .attr('fill', 'orange')
+        ;
+    });
+
+</script>
+</body>
+</html>
