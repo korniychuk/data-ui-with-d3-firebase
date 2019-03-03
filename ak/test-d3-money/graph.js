@@ -63,6 +63,22 @@ const handleMouseLeave = (d, i, n) => {
         .transition('changeSliceFill').duration(300)
             .attr('fill', colour(d.data.name));
 };
+const handleClick = (d) => {
+    const id = d.data.id;
+    console.log('handleClick() id:', id);
+    db.collection('expenses').doc(id).delete();
+};
+
+const tip = d3.tip()
+    .attr('class', 'tip card')
+    .html(d =>
+        `<div class="name">${d.data.name}</div>`
+      + `<div class="cost">${d.data.cost}</div>`
+      + `<div class="delete">Click slice to delete</div>`
+    )
+;
+
+graph.call(tip);
 
 const update = (data) => {
     console.log('update() data:', data);
@@ -103,10 +119,16 @@ const update = (data) => {
 
     // 7.
     graph.selectAll('path')
-        .on('mouseover', handleMouseOver)
-        .on('mouseleave', handleMouseLeave)
+        .on('mouseover', (d, i, n) => {
+            tip.show(d, n[i]);
+            handleMouseOver(d, i, n);
+        })
+        .on('mouseleave', (d, i, n) => {
+            tip.hide(d, n[i]);
+            handleMouseLeave(d, i, n);
+        })
+        .on('click', handleClick)
     ;
-
 };
 
 const data = [];
