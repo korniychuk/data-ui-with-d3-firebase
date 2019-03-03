@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="canvas">
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-firestore.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCJ_HW5zmOlZQV6-Xkp33ZQIqikLobjJ9A",
+        authDomain: "d3-firebase-learning.firebaseapp.com",
+        databaseURL: "https://d3-firebase-learning.firebaseio.com",
+        projectId: "d3-firebase-learning",
+        storageBucket: "d3-firebase-learning.appspot.com",
+        messagingSenderId: "630813677335"
+    };
+    firebase.initializeApp(config);
+    const db = firebase.firestore();
+    // db.settings({ timestampsInSnapshots: true });
+</script>
+<script src="https://d3js.org/d3.v5.js"></script>
+<script>
+    const svgWidth = 900;
+    const svgHeight = 600;
+    const margin = { top: 50, right: 100, bottom: 100, left: 100 };
+    const graphWidth = svgWidth - margin.left - margin.right;
+    const graphHeight = svgHeight - margin.top - margin.bottom;
+
+
+    const canvas = d3.select('.canvas');
+    const svg = canvas.append('svg')
+        .attr('width', svgWidth)
+        .attr('height', svgHeight)
+    ;
+    const graph = svg.append('g')
+        .attr('width', graphWidth)
+        .attr('height', graphHeight)
+        .attr('transform', `translate(${margin.left}, ${margin.top})`)
+    ;
+    const selectedRects = graph.selectAll('rect');
+
+    db.collection('dishes').get().then((res) => {
+        const data = [];
+        res.docs.forEach(doc => data.push(doc.data()));
+    // d3.json('menu.json').then(data => {
+        const rects = selectedRects.data(data);
+
+        const y = d3.scaleLinear()
+            // .domain([ 0, 1000 ])
+            // .domain([ d3.min(data, v => v.orders), d3.max(data, v => v.orders) ])
+            // .domain(d3.extent(data.map(v => v.orders)))
+            .domain(d3.extent(data, v => v.orders))
+            .range([ graphHeight, 0 ])
+        ;
+        const x = d3.scaleBand()
+            .domain(data.map(v => v.name))
+            .range([0, graphWidth])
+            .paddingInner(0.2)
+            .paddingOuter(0.2)
+        ;
+
+        rects
+            .attr('y', d => y(d.orders))
+            .attr('x', (d, i) => x(d.name))
+            .attr('width', x.bandwidth)
+            .attr('height', d => graphHeight - y(d.orders))
+            .attr('fill', 'orange')
+        ;
+
+        rects.enter()
+            .append('rect')
+            .attr('y', d => y(d.orders))
+            .attr('x', (d, i) => x(d.name))
+            .attr('width', x.bandwidth)
+            .attr('height', d => graphHeight - y(d.orders))
+            .attr('fill', 'orange')
+        ;
+
+        const xAxisGroup = graph.append('g').attr('transform', `translate(0, ${graphHeight})`);
+        const yAxisGroup = graph.append('g');
+        const x2AxisGroup = graph.append('g');
+        const y2AxisGroup = graph.append('g').attr('transform', `translate(${graphWidth}, 0)`);
+
+        const xAxis = d3.axisBottom(x);
+        const yAxis = d3.axisLeft(y)
+            .ticks(5)
+            .tickFormat(v => v + ' orders')
+        ;
+        const x2Axis = d3.axisTop(x);
+        const y2Axis = d3.axisRight(y)
+            .ticks(5)
+            .tickFormat(v => v + ' orders')
+        ;
+
+        xAxisGroup.call(xAxis);
+        yAxisGroup.call(yAxis);
+        x2AxisGroup.call(x2Axis);
+        y2AxisGroup.call(y2Axis);
+
+        xAxisGroup.selectAll('text')
+            .attr('transform', 'rotate(-45)')
+            .attr('text-anchor', 'end')
+        ;
+        x2AxisGroup.selectAll('text')
+            .attr('transform', 'rotate(-45)')
+            .attr('text-anchor', 'start')
+            .attr('fill', 'green')
+        ;
+    });
+
+</script>
+</body>
+</html>
