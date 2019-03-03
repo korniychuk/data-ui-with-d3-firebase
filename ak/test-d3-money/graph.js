@@ -22,7 +22,16 @@ const arcPath = d3.arc()
 ;
 
 const update = (data) => {
-    console.log('data', data);
+    const paths = graph.selectAll('path').data(pie(data));
+
+    paths.enter()
+        .append('path')
+            .attr('class', 'arc')
+            .attr('d', arcPath)
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 3)
+    ;
+
 };
 
 const data = [];
