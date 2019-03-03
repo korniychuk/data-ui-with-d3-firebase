@@ -33,6 +33,18 @@ const arcTweenExit = (d) => {
     return t => arcPath({ ...d, startAngle: i(t) });
 };
 
+function arcTweenUpdate(d) {
+    const i = d3.interpolate(this._current, d);
+
+    this._current = d;
+
+    return t => {
+        const r = arcPath(i(t));
+
+        return r;
+    }
+}
+
 const update = (data) => {
     console.log('update() data:', data);
     // 1.
@@ -48,7 +60,10 @@ const update = (data) => {
         .remove();
 
     // 4.
-    paths.attr('d', arcPath);
+    paths.attr('d', arcPath)
+        .transition().duration(750)
+        .attrTween('d', arcTweenUpdate)
+    ;
 
     // 5.
     paths.enter()
@@ -58,6 +73,7 @@ const update = (data) => {
             .attr('stroke', '#fff')
             .attr('stroke-width', 3)
             .attr('fill', d => colour(d.data.name))
+            .each(function(d) { this._current = d; })
             .transition().duration(750)
                 .attrTween('d', arcTweenEnter)
     ;
