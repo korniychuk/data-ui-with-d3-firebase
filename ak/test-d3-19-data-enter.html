@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="canvas">
+    <svg width="600" height="600">
+        <rect></rect>
+    </svg>
+</div>
+
+<script src="https://d3js.org/d3.v5.js"></script>
+<script>
+    const canvas = d3.select('.canvas svg');
+    const selectedRects = canvas.selectAll('rect');
+
+    const data = [
+        { width: 200, height: 400, fill: 'pink' },
+        { width: 150, height: 200, fill: 'green' },
+        { width: 75, height: 100, fill: 'yellow' },
+    ];
+
+    const rects = selectedRects
+        .data(data)
+        .attr('width', d => d.width)
+        .attr('height', d => d.height)
+        .attr('fill', d => d.fill)
+    ;
+
+    rects.enter()
+        .append('rect')
+        .attr('width', d => d.width)
+        .attr('height', d => d.height)
+        .attr('fill', d => d.fill)
+    ;
+
+    console.log('rect', rects);
+
+</script>
+</body>
+</html>
