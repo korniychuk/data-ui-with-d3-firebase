@@ -92,7 +92,7 @@
 
     const update = (data) => {
         // 1. updating scale domains
-        y.domain(d3.extent(data, v => v.orders));
+        y.domain([ 0, d3.max(data, v => v.orders) ]);
         x.domain(data.map(v => v.name));
 
         // 2. join updated data to elements
@@ -106,9 +106,6 @@
             .attr('x', (d, i) => x(d.name))
             .attr('width', x.bandwidth)
             .attr('fill', 'orange')
-            .transition().duration(1500)
-                .attr('y', d => y(d.orders))
-                .attr('height', d => graphHeight - y(d.orders))
         ;
 
         // 5. Append the enter selection to the DOM
@@ -119,7 +116,8 @@
             .attr('width', x.bandwidth)
             .attr('height', 0)
             .attr('fill', 'orange')
-            .transition().duration(1500)
+            .merge(rects)
+            .transition(t)
                 .attr('y', d => y(d.orders))
                 .attr('height', d => graphHeight - y(d.orders))
         ;
