@@ -45,6 +45,25 @@ function arcTweenUpdate(d) {
     }
 }
 
+const legendGroup = svg.append('g').attr('transform', `translate(${dims.width + 40}, 10)`);
+const legend = d3.legendColor()
+    .shape('circle')
+    .shapePadding(10)
+    .scale(colour)
+;
+
+const handleMouseOver = (d, i, n) => {
+    d3.select(n[i])
+        .transition('changeSliceFill').duration(300)
+            .attr('fill', '#fff');
+};
+
+const handleMouseLeave = (d, i, n) => {
+    d3.select(n[i])
+        .transition('changeSliceFill').duration(300)
+            .attr('fill', colour(d.data.name));
+};
+
 const update = (data) => {
     console.log('update() data:', data);
     // 1.
@@ -76,6 +95,16 @@ const update = (data) => {
             .each(function(d) { this._current = d; })
             .transition().duration(750)
                 .attrTween('d', arcTweenEnter)
+    ;
+
+    // 6.
+    legendGroup.call(legend);
+    legendGroup.selectAll('text').attr('fill', 'white');
+
+    // 7.
+    graph.selectAll('path')
+        .on('mouseover', handleMouseOver)
+        .on('mouseleave', handleMouseLeave)
     ;
 
 };
