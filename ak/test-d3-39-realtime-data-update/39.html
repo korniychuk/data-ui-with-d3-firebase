@@ -124,15 +124,45 @@
         y2AxisGroup.call(y2Axis);
     };
 
-    db.collection('dishes').get().then((res) => {
-        const data = [];
-        res.docs.forEach(doc => data.push(doc.data()));
+    // db.collection('dishes').get().then((res) => {
+    //     const data = [];
+    //     res.docs.forEach(doc => data.push(doc.data()));
+    //
+    //     update(data);
+    //     d3.interval(() => {
+    //         data[0].orders -= 50;
+    //         update(data);
+    //     }, 1000);
+    // });
 
+    let data = [];
+
+    db.collection('dishes').onSnapshot((res) => {
+        // console.log('changes', res);
+        res.docChanges().forEach((change) => {
+            // console.log('change', change.doc.data());
+            // console.log('change %o', change);
+            const doc = { ...change.doc.data(), id: change.doc.id };
+            switch (change.type) {
+
+                case 'added':
+                    data.push(doc);
+                break;
+
+                case 'modified':
+                    const index = data.findIndex(v => v.id === doc.id);
+                    data[index] = doc;
+                break;
+
+                case 'removed':
+                    data = data.filter(v => v.id !== doc.id);
+                break;
+
+            }
+            console.log('change', change);
+        });
+        console.log('update');
         update(data);
-        d3.interval(() => {
-            data[0].orders -= 50;
-            update(data);
-        }, 1000);
     });
 
 </script>
