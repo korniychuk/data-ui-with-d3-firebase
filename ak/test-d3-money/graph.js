@@ -21,15 +21,30 @@ const arcPath = d3.arc()
     .innerRadius(dims.radius / 2)
 ;
 
+const colour = d3.scaleOrdinal(d3['schemeSet3']);
+
 const update = (data) => {
+    console.log('update() data:', data);
+    // 1.
     const paths = graph.selectAll('path').data(pie(data));
 
+    // 2.
+    colour.domain(data.map(v => v.name));
+
+    // 3.
+    paths.exit().remove();
+
+    // 4.
+    paths.attr('d', arcPath);
+
+    // 5.
     paths.enter()
         .append('path')
             .attr('class', 'arc')
             .attr('d', arcPath)
             .attr('stroke', '#fff')
             .attr('stroke-width', 3)
+            .attr('fill', d => colour(d.data.name))
     ;
 
 };
