@@ -17,7 +17,7 @@
 <script>
     const svgWidth = 900;
     const svgHeight = 600;
-    const margin = { top: 20, right: 50, bottom: 100, left: 50 };
+    const margin = { top: 50, right: 100, bottom: 100, left: 100 };
     const graphWidth = svgWidth - margin.left - margin.right;
     const graphHeight = svgHeight - margin.top - margin.bottom;
 
@@ -74,14 +74,30 @@
         const y2AxisGroup = graph.append('g').attr('transform', `translate(${graphWidth}, 0)`);
 
         const xAxis = d3.axisBottom(x);
-        const yAxis = d3.axisLeft(y);
+        const yAxis = d3.axisLeft(y)
+            .ticks(5)
+            .tickFormat(v => v + ' orders')
+        ;
         const x2Axis = d3.axisTop(x);
-        const y2Axis = d3.axisRight(y);
+        const y2Axis = d3.axisRight(y)
+            .ticks(5)
+            .tickFormat(v => v + ' orders')
+        ;
 
         xAxisGroup.call(xAxis);
         yAxisGroup.call(yAxis);
         x2AxisGroup.call(x2Axis);
         y2AxisGroup.call(y2Axis);
+
+        xAxisGroup.selectAll('text')
+            .attr('transform', 'rotate(-45)')
+            .attr('text-anchor', 'end')
+        ;
+        x2AxisGroup.selectAll('text')
+            .attr('transform', 'rotate(-45)')
+            .attr('text-anchor', 'start')
+            .attr('fill', 'green')
+        ;
     });
 
 </script>
