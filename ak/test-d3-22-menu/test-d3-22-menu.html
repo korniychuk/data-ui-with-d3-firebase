@@ -11,28 +11,14 @@
 <body>
 
 <div class="canvas">
+    <svg width="600" height="500">
+    </svg>
 </div>
 
 <script src="https://d3js.org/d3.v5.js"></script>
 <script>
-    const svgWidth = 900;
-    const svgHeight = 600;
-    const margin = { top: 20, right: 50, bottom: 100, left: 50 };
-    const graphWidth = svgWidth - margin.left - margin.right;
-    const graphHeight = svgHeight - margin.top - margin.bottom;
-
-
-    const canvas = d3.select('.canvas');
-    const svg = canvas.append('svg')
-        .attr('width', svgWidth)
-        .attr('height', svgHeight)
-    ;
-    const graph = svg.append('g')
-        .attr('width', graphWidth)
-        .attr('height', graphHeight)
-        .attr('transform', `translate(${margin.left}, ${margin.top})`)
-    ;
-    const selectedRects = graph.selectAll('rect');
+    const canvas = d3.select('.canvas svg');
+    const selectedRects = canvas.selectAll('rect');
 
     d3.json('menu.json').then(data => {
         const rects = selectedRects.data(data);
@@ -42,11 +28,11 @@
             // .domain([ d3.min(data, v => v.orders), d3.max(data, v => v.orders) ])
             // .domain(d3.extent(data.map(v => v.orders)))
             .domain(d3.extent(data, v => v.orders))
-            .range([ 0, graphHeight ])
+            .range([ 0, 500 ])
         ;
         const x = d3.scaleBand()
             .domain(data.map(v => v.name))
-            .range([0, graphWidth])
+            .range([0, 600])
             .paddingInner(0.2)
             .paddingOuter(0.2)
         ;
@@ -65,21 +51,6 @@
             .attr('height', d => y(d.orders))
             .attr('fill', 'orange')
         ;
-
-        const xAxisGroup = graph.append('g').attr('transform', `translate(0, ${graphHeight})`);
-        const yAxisGroup = graph.append('g');
-        const x2AxisGroup = graph.append('g');
-        const y2AxisGroup = graph.append('g').attr('transform', `translate(${graphWidth}, 0)`);
-
-        const xAxis = d3.axisBottom(x);
-        const yAxis = d3.axisLeft(y);
-        const x2Axis = d3.axisTop(x);
-        const y2Axis = d3.axisRight(y);
-
-        xAxisGroup.call(xAxis);
-        yAxisGroup.call(yAxis);
-        x2AxisGroup.call(x2Axis);
-        y2AxisGroup.call(y2Axis);
     });
 
 </script>
