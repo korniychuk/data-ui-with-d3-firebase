@@ -101,11 +101,12 @@
 
         // 4. update current shapes in the dom
         rects
-            .attr('y', d => y(d.orders))
             .attr('x', (d, i) => x(d.name))
             .attr('width', x.bandwidth)
-            .attr('height', d => graphHeight - y(d.orders))
             .attr('fill', 'orange')
+            .transition().duration(1500)
+                .attr('y', d => y(d.orders))
+                .attr('height', d => graphHeight - y(d.orders))
         ;
 
         // 5. Append the enter selection to the DOM
