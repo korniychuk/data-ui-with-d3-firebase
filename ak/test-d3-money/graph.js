@@ -23,6 +23,12 @@ const arcPath = d3.arc()
 
 const colour = d3.scaleOrdinal(d3['schemeSet3']);
 
+const arcTweenEnter = (d) => {
+    const i = d3.interpolate(d.endAngle, d.startAngle);
+
+    return t => arcPath({ ...d, startAngle: i(t) });
+};
+
 const update = (data) => {
     console.log('update() data:', data);
     // 1.
@@ -40,11 +46,13 @@ const update = (data) => {
     // 5.
     paths.enter()
         .append('path')
-            .attr('class', 'arc')
+            // .attr('class', 'arc')
             .attr('d', arcPath)
             .attr('stroke', '#fff')
             .attr('stroke-width', 3)
             .attr('fill', d => colour(d.data.name))
+            .transition().duration(750)
+                .attrTween('d', arcTweenEnter)
     ;
 
 };
