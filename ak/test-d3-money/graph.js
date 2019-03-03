@@ -25,7 +25,11 @@ const colour = d3.scaleOrdinal(d3['schemeSet3']);
 
 const arcTweenEnter = (d) => {
     const i = d3.interpolate(d.endAngle, d.startAngle);
+    return t => arcPath({ ...d, startAngle: i(t) });
+};
 
+const arcTweenExit = (d) => {
+    const i = d3.interpolate(d.startAngle, d.endAngle);
     return t => arcPath({ ...d, startAngle: i(t) });
 };
 
@@ -38,7 +42,10 @@ const update = (data) => {
     colour.domain(data.map(v => v.name));
 
     // 3.
-    paths.exit().remove();
+    paths.exit()
+        .transition().duration(750)
+        .attrTween('d', arcTweenExit)
+        .remove();
 
     // 4.
     paths.attr('d', arcPath);
