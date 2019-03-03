@@ -16,14 +16,6 @@ const pie = d3.pie()
     .value(d => d.cost)
 ;
 
-// const angles = pie([
-//     { name: 'rent', cost: 500 },
-//     { name: 'bills', cost: 300 },
-//     { name: 'gaming', cost: 200 },
-// ]);
-
-// console.log('angles', angles);
-
 const arcPath = d3.arc()
     .outerRadius(dims.radius)
     .innerRadius(dims.radius / 2)
