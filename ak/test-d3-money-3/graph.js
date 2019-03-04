@@ -34,6 +34,25 @@ const handleSectorClick = (d, i, n) => {
     db.collection('expenses').doc(id).delete();
 };
 
+const tip = d3.tip()
+    .attr('class', 'tip card')
+    .html(data =>
+          `<div class="name">${data.name}</div>`
+        + `<div class="cost">${data.cost}</div>`
+        + `<div class="delete">Click slice to delete</div>`
+    )
+;
+
+// а graph ли?
+graph.call(tip);
+
+const handleSectorOver = (d, i, n) => {
+    tip.show(d.data, n[i]);
+};
+const handleSectorLeave = (d, i, n) => {
+    tip.hide(d.data, n[i]);
+};
+
 const update = (data) => {
     console.log('update() data:', data);
 
@@ -61,6 +80,8 @@ const update = (data) => {
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
         .attr('fill', d => colour(d.data.name))
+        .on('mouseover', handleSectorOver)
+        .on('mouseleave', handleSectorLeave)
         .on('click', handleSectorClick)
     ;
 
