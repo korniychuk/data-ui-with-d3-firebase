@@ -65,6 +65,11 @@ const enterTween = (d) => {
 
     return t => arcPath({ ...d, startAngle: i(t) });
 };
+const exitTween = (d) => {
+    const i = d3.interpolate(d.startAngle, d.endAngle);
+
+    return t => arcPath({ ...d, startAngle: i(t) });
+};
 
 const update = (data) => {
     console.log('update() data:', data);
@@ -76,7 +81,10 @@ const update = (data) => {
     colour.domain(data.map(v => v.name));
 
     // 3. exiting elements
-    paths.exit().remove();
+    paths.exit()
+        .transition().duration(750)
+        .attrTween('d', exitTween)
+        .remove();
 
     // 4. updating elements
     paths
@@ -102,8 +110,6 @@ const update = (data) => {
     // 6. Legend
     legendGroup.call(legend);
     legendGroup.selectAll('text').attr('fill', 'white');
-
-
 };
 
 let data = [];
