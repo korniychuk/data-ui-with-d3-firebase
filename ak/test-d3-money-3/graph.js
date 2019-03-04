@@ -53,6 +53,13 @@ const handleSectorLeave = (d, i, n) => {
     tip.hide(d.data, n[i]);
 };
 
+const legendGroup = svg.append('g').attr('transform', `translate(${dims.width + 40}, 10)`);
+const legend = d3.legendColor()
+    .shape('circle')
+    .shapePadding(10)
+    .scale(colour)
+;
+
 const update = (data) => {
     console.log('update() data:', data);
 
@@ -84,6 +91,10 @@ const update = (data) => {
         .on('mouseleave', handleSectorLeave)
         .on('click', handleSectorClick)
     ;
+
+    // 6. Legend
+    legendGroup.call(legend);
+    legendGroup.selectAll('text').attr('fill', 'white');
 
 
 };
