@@ -26,6 +26,12 @@ const legend = d3.legendColor()
     .shape('circle')
     .shapePadding(10)
     .scale(colour)
+    .title('Legend')
+    .labels(({ i, domain }) => {
+        const id = domain[i];
+        const obj = data.find(v => v.id === id);
+        return obj.name;
+    })
 ;
 
 const tip = d3.tip()
@@ -49,7 +55,7 @@ const handleMouseLeave = (d, i, n) => {
     tip.hide(d.data, n[i]);
     d3.select(n[i])
         .transition('white-on-hover').duration(300)
-            .attr('fill', colour(d.data.name))
+            .attr('fill', colour(d.data.id))
     ;
 };
 const handleSectorClick = (d, i, n) => {
@@ -84,7 +90,7 @@ const update = (data) => {
     const paths = graph.selectAll('path').data(pie(data));
 
     // 2. scales
-    colour.domain(data.map(v => v.name));
+    colour.domain(data.map(v => v.id));
 
     // 3. removing
     paths.exit()
@@ -94,7 +100,7 @@ const update = (data) => {
 
     // 4. updating
     paths
-        .attr('fill', d => colour(d.data.name))
+        .attr('fill', d => colour(d.data.id))
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
         .transition().duration(750)
@@ -104,7 +110,7 @@ const update = (data) => {
     // 5. entering new elements
     paths.enter()
         .append('path')
-        .attr('fill', d => colour(d.data.name))
+        .attr('fill', d => colour(d.data.id))
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
         .each(function(d) { this._current = d; })
