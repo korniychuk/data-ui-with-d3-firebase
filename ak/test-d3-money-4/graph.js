@@ -36,8 +36,7 @@ const tip = d3.tip()
     )
 ;
 
-// tip.
-graph.call(tip);
+svg.call(tip);
 
 const handleMouseOver = (d, i, n) => {
     tip.show(d.data, n[i]);
