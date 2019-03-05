@@ -52,6 +52,13 @@ const handleMouseLeave = (d, i, n) => {
             .attr('fill', colour(d.data.name))
     ;
 };
+const handleSectorClick = (d, i, n) => {
+   const id = d.data.id;
+    if (!id) {
+        return console.error('Can not find ID');
+    }
+    db.collection('expenses').doc(id).delete();
+};
 
 const update = (data) => {
     console.log('update() data:', data);
@@ -82,6 +89,7 @@ const update = (data) => {
         .attr('stroke-width', 3)
         .on('mouseover', handleMouseOver)
         .on('mouseleave', handleMouseLeave)
+        .on('click', handleSectorClick)
     ;
 
     // 6. legend
