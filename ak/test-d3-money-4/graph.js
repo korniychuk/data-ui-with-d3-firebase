@@ -70,6 +70,12 @@ const removeTween = (d) => {
 
     return t => arcPath({ ...d, startAngle: i(t) });
 };
+const updateTween = function (d) {
+    const i = d3.interpolate(this._current, d);
+    this._current = d;
+
+    return t => arcPath(i(t));
+};
 
 const update = (data) => {
     console.log('update() data:', data);
@@ -88,10 +94,11 @@ const update = (data) => {
 
     // 4. updating
     paths
-        .attr('d', arcPath)
         .attr('fill', d => colour(d.data.name))
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
+        .transition().duration(750)
+            .attrTween('d', updateTween)
     ;
 
     // 5. entering new elements
@@ -100,6 +107,7 @@ const update = (data) => {
         .attr('fill', d => colour(d.data.name))
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
+        .each(function(d) { this._current = d; })
         .on('mouseover', handleMouseOver)
         .on('mouseleave', handleMouseLeave)
         .on('click', handleSectorClick)
