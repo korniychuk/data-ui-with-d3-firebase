@@ -60,6 +60,12 @@ const handleSectorClick = (d, i, n) => {
     db.collection('expenses').doc(id).delete();
 };
 
+const enterTween = (d) => {
+    const i = d3.interpolate(d.endAngle, d.startAngle);
+
+    return t => arcPath({ ...d, startAngle: i(t) });
+};
+
 const update = (data) => {
     console.log('update() data:', data);
 
@@ -83,13 +89,14 @@ const update = (data) => {
     // 5. entering new elements
     paths.enter()
         .append('path')
-        .attr('d', arcPath)
         .attr('fill', d => colour(d.data.name))
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
         .on('mouseover', handleMouseOver)
         .on('mouseleave', handleMouseLeave)
         .on('click', handleSectorClick)
+        .transition().duration(750)
+            .attrTween('d', enterTween)
     ;
 
     // 6. legend
