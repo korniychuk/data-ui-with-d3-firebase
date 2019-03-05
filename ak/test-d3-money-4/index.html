@@ -66,6 +66,21 @@
     </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-firestore.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCJ_HW5zmOlZQV6-Xkp33ZQIqikLobjJ9A",
+        authDomain: "d3-firebase-learning.firebaseapp.com",
+        databaseURL: "https://d3-firebase-learning.firebaseio.com",
+        projectId: "d3-firebase-learning",
+        storageBucket: "d3-firebase-learning.appspot.com",
+        messagingSenderId: "630813677335"
+    };
+    firebase.initializeApp(config);
+    const db = firebase.firestore();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="index.js"></script>
 <script src="graph.js"></script>
