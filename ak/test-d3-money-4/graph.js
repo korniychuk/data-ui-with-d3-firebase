@@ -65,6 +65,11 @@ const enterTween = (d) => {
 
     return t => arcPath({ ...d, startAngle: i(t) });
 };
+const removeTween = (d) => {
+    const i = d3.interpolate(d.startAngle, d.endAngle);
+
+    return t => arcPath({ ...d, startAngle: i(t) });
+};
 
 const update = (data) => {
     console.log('update() data:', data);
@@ -76,7 +81,10 @@ const update = (data) => {
     colour.domain(data.map(v => v.name));
 
     // 3. removing
-    paths.exit().remove();
+    paths.exit()
+        .transition().duration(750)
+            .attrTween('d', removeTween)
+            .remove();
 
     // 4. updating
     paths
