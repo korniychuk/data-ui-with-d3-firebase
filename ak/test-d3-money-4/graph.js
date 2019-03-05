@@ -21,6 +21,13 @@ const arcPath = d3.arc()
 
 const colour = d3.scaleOrdinal(d3['schemeSet3']);
 
+const legendGroup = svg.append('g').attr('transform', `translate(${dims.width + 40}, 10)`);
+const legend = d3.legendColor()
+    .shape('circle')
+    .shapePadding(10)
+    .scale(colour)
+;
+
 const update = (data) => {
     console.log('update() data:', data);
 
@@ -49,6 +56,10 @@ const update = (data) => {
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
     ;
+
+    // 6. legend
+    legendGroup.call(legend);
+    legendGroup.selectAll('text').attr('fill', 'white');
 };
 
 let data = [];
