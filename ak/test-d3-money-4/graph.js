@@ -28,6 +28,24 @@ const legend = d3.legendColor()
     .scale(colour)
 ;
 
+const tip = d3.tip()
+    .attr('class', 'tip card')
+    .html(d => `<div class="name">${d.name}</div>`
+             + `<div class="cost">${d.cost}</div>`
+             + `<div class="delete">Click slice to delete</div>`
+    )
+;
+
+// tip.
+graph.call(tip);
+
+const handleMouseOver = (d, i, n) => {
+    tip.show(d.data, n[i]);
+};
+const handleMouseLeave = (d, i, n) => {
+    tip.hide(d.data, n[i]);
+};
+
 const update = (data) => {
     console.log('update() data:', data);
 
@@ -55,6 +73,8 @@ const update = (data) => {
         .attr('fill', d => colour(d.data.name))
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
+        .on('mouseover', handleMouseOver)
+        .on('mouseleave', handleMouseLeave)
     ;
 
     // 6. legend
