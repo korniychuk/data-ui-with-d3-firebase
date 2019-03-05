@@ -30,6 +30,17 @@ const update = (data) => {
     // 2. scales
     colour.domain(data.map(v => v.name));
 
+    // 3. removing
+    paths.exit().remove();
+
+    // 4. updating
+    paths
+        .attr('d', arcPath)
+        .attr('fill', d => colour(d.data.name))
+        .attr('stroke', 'white')
+        .attr('stroke-width', 3)
+    ;
+
     // 5. entering new elements
     paths.enter()
         .append('path')
