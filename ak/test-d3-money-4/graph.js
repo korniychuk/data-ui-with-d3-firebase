@@ -41,14 +41,14 @@ svg.call(tip);
 const handleMouseOver = (d, i, n) => {
     tip.show(d.data, n[i]);
     d3.select(n[i])
-        .transition().duration(300)
+        .transition('white-on-hover').duration(300)
             .attr('fill', 'white')
     ;
 };
 const handleMouseLeave = (d, i, n) => {
     tip.hide(d.data, n[i]);
     d3.select(n[i])
-        .transition().duration(300)
+        .transition('white-on-hover').duration(300)
             .attr('fill', colour(d.data.name))
     ;
 };
