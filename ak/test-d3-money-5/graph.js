@@ -35,6 +35,23 @@ const legend = d3.legendColor()
     })
 ;
 
+const tip = d3.tip()
+    .attr('class', 'tip card')
+    .html(d => `<div class="name">${d.name}</div>`
+             + `<div class="cost">${d.cost}</div>`
+             + `<div class="delete">Click sector to delete</div>`
+    )
+;
+
+svg.call(tip);
+
+const handleMouseOver = (d, i, n) => {
+    tip.show(d.data, n[i]);
+};
+const handleMouseLeave = (d, i, n) => {
+    tip.hide(d.data, n[i]);
+};
+
 const update = (data) => {
     console.log('update() data:', data);
 
@@ -62,11 +79,12 @@ const update = (data) => {
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
         .attr('fill', d => colour(d.data.id))
+        .on('mouseover', handleMouseOver)
+        .on('mouseleave', handleMouseLeave)
     ;
 
     legendGroup.call(legend);
     legendGroup.selectAll('text').attr('fill', 'white');
-
 };
 
 let data = [];
