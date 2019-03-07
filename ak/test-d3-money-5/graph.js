@@ -64,6 +64,23 @@ const handleSectorClick = (d, i, n) => {
     db.collection('expenses').doc(id).delete();
 };
 
+const enterTween = (d) => {
+    const i = d3.interpolate(d.endAngle, d.startAngle);
+
+    return t => arcPath({ ...d, startAngle: i(t) });
+};
+const removeTween = (d) => {
+    const i = d3.interpolate(d.startAngle, d.endAngle);
+
+    return t => arcPath({ ...d, startAngle: i(t) });
+};
+const updateTween = function (d) {
+    const i = d3.interpolate(this._current, d);
+    this._current = d;
+
+    return t => arcPath(i(t));
+};
+
 const update = (data) => {
     console.log('update() data:', data);
 
@@ -74,7 +91,10 @@ const update = (data) => {
     colour.domain(data.map(v => v.id));
 
     // 3. removing
-    paths.exit().remove();
+    paths.exit()
+        .transition().duration(750)
+            .attrTween('d', removeTween)
+            .remove();
 
     // 4. updating
     paths
@@ -82,18 +102,22 @@ const update = (data) => {
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
         .attr('fill', d => colour(d.data.id))
+        .transition().duration(750)
+            .attrTween('d', updateTween)
     ;
 
     // 5. entering elements
     paths.enter()
         .append('path')
-        .attr('d', arcPath)
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
         .attr('fill', d => colour(d.data.id))
         .on('mouseover', handleMouseOver)
         .on('mouseleave', handleMouseLeave)
         .on('click', handleSectorClick)
+        .each(function (d) { this._current = d; })
+        .transition().duration(750)
+            .attrTween('d', enterTween)
     ;
 
     legendGroup.call(legend);
