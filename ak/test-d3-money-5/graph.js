@@ -51,6 +51,10 @@ const handleMouseOver = (d, i, n) => {
 const handleMouseLeave = (d, i, n) => {
     tip.hide(d.data, n[i]);
 };
+const handleSectorClick = (d, i, n) => {
+    const id = d.data.id;
+    db.collection('expenses').doc(id).delete();
+};
 
 const update = (data) => {
     console.log('update() data:', data);
@@ -81,6 +85,7 @@ const update = (data) => {
         .attr('fill', d => colour(d.data.id))
         .on('mouseover', handleMouseOver)
         .on('mouseleave', handleMouseLeave)
+        .on('click', handleSectorClick)
     ;
 
     legendGroup.call(legend);
