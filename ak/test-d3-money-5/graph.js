@@ -47,9 +47,17 @@ svg.call(tip);
 
 const handleMouseOver = (d, i, n) => {
     tip.show(d.data, n[i]);
+    d3.select(n[i])
+        .transition('white-on-over').duration(300)
+            .attr('fill', 'white')
+    ;
 };
 const handleMouseLeave = (d, i, n) => {
     tip.hide(d.data, n[i]);
+    d3.select(n[i])
+        .transition('white-on-over').duration(300)
+            .attr('fill', d => colour(d.data.id))
+    ;
 };
 const handleSectorClick = (d, i, n) => {
     const id = d.data.id;
