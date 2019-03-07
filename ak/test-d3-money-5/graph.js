@@ -18,19 +18,24 @@ const arcPath = d3.arc()
     .innerRadius(dims.radius / 2)
 ;
 
+const colour = d3.scaleOrdinal(d3['schemeSet3']);
+
 const update = (data) => {
     console.log('update() data:', data);
 
-    // 1.
+    // 1. data
     const paths = graph.selectAll('path').data(pie(data));
 
-    // 5.
+    // 2. scales
+    colour.domain(data.map(v => v.id));
+
+    // 5. entering elements
     paths.enter()
         .append('path')
         .attr('d', arcPath)
         .attr('stroke', 'white')
         .attr('stroke-width', 3)
-        .attr('fill', 'black')
+        .attr('fill', d => colour(d.data.id))
     ;
 };
 
