@@ -20,6 +20,21 @@ const arcPath = d3.arc()
 
 const colour = d3.scaleOrdinal(d3['schemeSet3']);
 
+const legendGroup = svg.append('g').attr('transform', `translate(${dims.width + 40}, 10)`);
+const legend = d3.legendColor()
+    .shape('circle')
+    .shapePadding(10)
+    .scale(colour)
+    .labels(({i, domain}) => {
+        const id = domain[i];
+        const expense = data.find(v => v.id === id);
+        if (!expense) {
+            return console.warn('Can not find expense. ID:', id);
+        }
+        return expense.name;
+    })
+;
+
 const update = (data) => {
     console.log('update() data:', data);
 
@@ -48,6 +63,10 @@ const update = (data) => {
         .attr('stroke-width', 3)
         .attr('fill', d => colour(d.data.id))
     ;
+
+    legendGroup.call(legend);
+    legendGroup.selectAll('text').attr('fill', 'white');
+
 };
 
 let data = [];
