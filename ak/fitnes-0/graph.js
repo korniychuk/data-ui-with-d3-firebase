@@ -26,6 +26,21 @@ const xAxisGroup = graph.append('g')
 const yAxisGroup = graph.append('g')
     .attr('class', 'y-axis')
 ;
+const guidesGroup = graph.append('g').attr('class', 'guides');
+const xGuide = guidesGroup.append('line')
+    .attr('class', 'x-guide')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 1)
+    .attr('stroke-dasharray', '2 2')
+    .style('opacity', 0)
+;
+const yGuide = guidesGroup.append('line')
+    .attr('class', 'y-guide')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 1)
+    .attr('stroke-dasharray', '2 2')
+    .style('opacity', 0)
+;
 
 const line = d3.line()
     .x(d => x(new Date(d.date)))
@@ -66,6 +81,47 @@ const update = (data) => {
             .attr('cy', v => y(v.distance))
             .attr('fill', '#ccc')
             .attr('r', 4)
+    ;
+    // @todo: 2 times
+    graph.selectAll('circle')
+        .on('mouseover', (d, i, n) => {
+            d3.select(n[i])
+                .transition().duration(100)
+                    .attr('r', 8)
+                    .attr('fill', '#fff')
+            ;
+            xGuide
+                .attr('x1', x(0))
+                .attr('y1', y(d.distance))
+                .attr('x1', x(new Date(d.date)))
+                .attr('y2', y(d.distance))
+                .transition().duration(100)
+                    .style('opacity', 1)
+            ;
+            yGuide
+                .attr('x1', x(new Date(d.date)))
+                .attr('y1', y(0))
+                .attr('x2', x(new Date(d.date)))
+                .attr('y2', y(d.distance))
+                .transition().duration(100)
+                    .style('opacity', 1)
+            ;
+        })
+        .on('mouseleave', (d, i, n) => {
+            d3.select(n[i])
+                .transition().duration(100)
+                    .attr('r', 4)
+                    .attr('fill', '#ccc')
+            ;
+            xGuide
+                .transition().duration(100)
+                    .style('opacity', 0)
+            ;
+            yGuide
+                .transition().duration(100)
+                    .style('opacity', 0)
+            ;
+        })
     ;
 
     // call axes
