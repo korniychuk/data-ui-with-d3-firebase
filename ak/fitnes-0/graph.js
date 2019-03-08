@@ -30,6 +30,8 @@ const yAxisGroup = graph.append('g')
 const update = (data) => {
     console.log('update() data:', data);
 
+    data = data.filter(v => v.activity === activity);
+
     // set scale domains
     x.domain(d3.extent(data, v => new Date(v.date)));
     y.domain([ 0, d3.max(data, v => v.distance) ]);

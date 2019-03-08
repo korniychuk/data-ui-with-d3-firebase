@@ -5,7 +5,7 @@ const formAct = document.querySelector('form span');
 const input = document.querySelector('input');
 const error = document.querySelector('.error');
 
-var activity = 'cycling';
+let activity = 'cycling';
 
 btns.forEach(btn => {
     btn.addEventListener('click', e => {
@@ -21,6 +21,8 @@ btns.forEach(btn => {
 
         // set text of form span (the activity)
         formAct.textContent = activity;
+
+        update(data);
     });
 });
 
