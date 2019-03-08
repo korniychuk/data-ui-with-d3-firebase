@@ -38,6 +38,27 @@ const update = (data) => {
     const xAxis = d3.axisBottom(x).ticks(4).tickFormat(d3.timeFormat('%b %d'));
     const yAxis = d3.axisLeft(y).ticks(4).tickFormat(d => d + 'm');
 
+    // create circles for objects
+    const circles = graph.selectAll('circle').data(data);
+
+    // remove unwanted points
+    circles.exit().remove();
+
+    // update current points
+    circles
+        .attr('cx', v => x(new Date(v.date)))
+        .attr('cy', v => y(v.distance))
+    ;
+
+    // enter new points
+    circles.enter()
+        .append('circle')
+            .attr('cx', v => x(new Date(v.date)))
+            .attr('cy', v => y(v.distance))
+            .attr('fill', '#ccc')
+            .attr('r', 4)
+    ;
+
     // call axes
     xAxisGroup.call(xAxis);
     yAxisGroup.call(yAxis);
