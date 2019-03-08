@@ -29,16 +29,16 @@ const yAxisGroup = graph.append('g')
 const guidesGroup = graph.append('g').attr('class', 'guides');
 const xGuide = guidesGroup.append('line')
     .attr('class', 'x-guide')
-    .attr('stroke', 'white')
+    .attr('stroke', '#aaa')
     .attr('stroke-width', 1)
-    .attr('stroke-dasharray', '2 2')
+    .attr('stroke-dasharray', 4)
     .style('opacity', 0)
 ;
 const yGuide = guidesGroup.append('line')
     .attr('class', 'y-guide')
-    .attr('stroke', 'white')
+    .attr('stroke', '#aaa')
     .attr('stroke-width', 1)
-    .attr('stroke-dasharray', '2 2')
+    .attr('stroke-dasharray', 4)
     .style('opacity', 0)
 ;
 
@@ -92,18 +92,18 @@ const update = (data) => {
             ;
             xGuide
                 .attr('x1', x(0))
-                .attr('y1', y(d.distance))
                 .attr('x1', x(new Date(d.date)))
+                .attr('y1', y(d.distance))
                 .attr('y2', y(d.distance))
-                .transition().duration(100)
+                // .transition().duration(100)
                     .style('opacity', 1)
             ;
             yGuide
                 .attr('x1', x(new Date(d.date)))
-                .attr('y1', y(0))
                 .attr('x2', x(new Date(d.date)))
+                .attr('y1', y(0))
                 .attr('y2', y(d.distance))
-                .transition().duration(100)
+                // .transition().duration(100)
                     .style('opacity', 1)
             ;
         })
@@ -114,11 +114,11 @@ const update = (data) => {
                     .attr('fill', '#ccc')
             ;
             xGuide
-                .transition().duration(100)
+                // .transition().duration(100)
                     .style('opacity', 0)
             ;
             yGuide
-                .transition().duration(100)
+                // .transition().duration(100)
                     .style('opacity', 0)
             ;
         })
