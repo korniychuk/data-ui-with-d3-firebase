@@ -27,10 +27,17 @@ const yAxisGroup = graph.append('g')
     .attr('class', 'y-axis')
 ;
 
+const line = d3.line()
+    .x(d => x(new Date(d.date)))
+    .y(d => y(d.distance))
+;
+const path = graph.append('path');
+
 const update = (data) => {
     console.log('update() data:', data);
 
     data = data.filter(v => v.activity === activity);
+    data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     // set scale domains
     x.domain(d3.extent(data, v => new Date(v.date)));
@@ -68,6 +75,13 @@ const update = (data) => {
     xAxisGroup.selectAll('text')
         .attr('transform', 'rotate(-40)')
         .attr('text-anchor', 'end')
+    ;
+
+    path.data([ data ])
+        .attr('fill', 'none')
+        .attr('stroke', '#00bfa5')
+        .attr('stroke-width', 2)
+        .attr('d', line)
     ;
 };
 
