@@ -1,5 +1,51 @@
+const margin = { top: 40, right: 20, bottom: 50, left: 100 };
+const graphWidth = 560 - margin.left - margin.right;
+const graphHeight = 600 - margin.top - margin.bottom;
+
+const svg = d3.select('.canvas')
+    .append('svg')
+    .attr('width', graphWidth + margin.left + margin.right)
+    .attr('height', graphHeight + margin.top + margin.bottom)
+;
+
+const graph = svg.append('g')
+    .attr('width', graphWidth)
+    .attr('height', graphHeight)
+    .attr('transform', `translate(${margin.left}, ${margin.top})`)
+;
+
+// scales
+const x = d3.scaleTime().range([ 0, graphWidth ]);
+const y = d3.scaleLinear().range([ graphHeight, 0 ]);
+
+// axes groups
+const xAxisGroup = graph.append('g')
+    .attr('class', 'x-axis')
+    .attr('transform', `translate(0, ${graphHeight})`)
+;
+const yAxisGroup = graph.append('g')
+    .attr('class', 'y-axis')
+;
+
 const update = (data) => {
     console.log('update() data:', data);
+
+    // set scale domains
+    x.domain(d3.extent(data, v => new Date(v.date)));
+    y.domain([ 0, d3.max(data, v => v.distance) ]);
+
+    // create axes
+    const xAxis = d3.axisBottom(x).ticks(4).tickFormat(d3.timeFormat('%b %d'));
+    const yAxis = d3.axisLeft(y).ticks(4).tickFormat(d => d + 'm');
+
+    // call axes
+    xAxisGroup.call(xAxis);
+    yAxisGroup.call(yAxis);
+
+    xAxisGroup.selectAll('text')
+        .attr('transform', 'rotate(-40)')
+        .attr('text-anchor', 'end')
+    ;
 };
 
 let data = [];
